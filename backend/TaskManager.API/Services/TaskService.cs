@@ -68,6 +68,18 @@ namespace TaskManager.API.Services
             return _mapper.Map<TaskItemResponseDto>(task);
         }
 
+        public async Task<TaskItemResponseDto?> ToggleCompleteTaskAsync(int id)
+        {
+            var userId = _currentUserService.UserId;
+
+            var task = await _taskRepository.ToggleCompleteAsync(id, userId!);
+
+            if(task == null)
+                return null;
+
+            return _mapper.Map<TaskItemResponseDto>(task);
+        }
+
         public async Task<TaskItemResponseDto?> UpdateTaskAsync(int id, UpdateTaskItemDto dto)
         {
             var task = _mapper.Map<TaskItem>(dto);

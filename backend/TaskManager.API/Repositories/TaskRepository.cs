@@ -55,6 +55,20 @@ namespace TaskManager.API.Repositories
                 .FirstOrDefaultAsync(t => t.Id == id && t.UserId == userId);
         }
 
+        public async Task<TaskItem?> ToggleCompleteAsync(int id, string userId)
+        {
+            var task = await _applicationDbContext.Tasks.FirstOrDefaultAsync(t => t.Id == id && t.UserId == userId);
+
+            if(task == null)
+                return null;
+
+            task.IsCompleted = !task.IsCompleted;
+
+            await _applicationDbContext.SaveChangesAsync();
+
+            return task;
+        }
+
         public async Task<TaskItem?> UpdateAsync(int id, TaskItem taskItem, string userId)
         {
             var existingTask = await _applicationDbContext.Tasks.FirstOrDefaultAsync(t => t.Id == id && t.UserId == userId);

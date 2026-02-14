@@ -13,5 +13,6 @@ namespace TaskManager.API.Interfaces
         Task<TaskItemResponseDto?> GetTaskByIdAsync(int id);
         Task<TaskItemResponseDto?> UpdateTaskAsync(int id, UpdateTaskItemDto dto);
         Task<TaskItemResponseDto?> DeleteTaskAsync(int id);
+        Task<TaskItemResponseDto?> ToggleCompleteTaskAsync(int id);
     }
 }

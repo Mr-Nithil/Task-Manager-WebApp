@@ -77,5 +77,18 @@ namespace TaskManager.API.Controllers
 
             return NoContent();
         }
+
+        [HttpPatch]
+        [Authorize]
+        [Route("{id:int}/toggle-complete")]
+        public async Task<IActionResult> ToggleComplete([FromRoute] int id)
+        {
+            var task = await _taskService.ToggleCompleteTaskAsync(id);
+
+            if(task == null)
+                return NotFound();
+
+            return Ok(task);
+        }
     }
 }
