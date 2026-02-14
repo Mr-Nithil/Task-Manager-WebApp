@@ -34,5 +34,12 @@ namespace TaskManager.API.Repositories
 
             return tasks;
         }
+
+        public async Task<TaskItem?> GetByIdAsync(int id, string userId)
+        {
+            return await _applicationDbContext
+                .Tasks
+                .FirstOrDefaultAsync(t => t.Id == id && t.UserId == userId);
+        }
     }
 }

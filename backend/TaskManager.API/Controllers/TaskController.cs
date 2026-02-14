@@ -30,6 +30,19 @@ namespace TaskManager.API.Controllers
             return Ok(taskDto);
         }
 
+        [HttpGet]
+        [Authorize]
+        [Route("{id:int}")]
+        public async Task<IActionResult> GetById([FromRoute] int id)
+        {
+            var task = await _taskService.GetTaskByIdAsync(id);
+
+            if(task == null)
+                return NotFound();
+
+            return Ok(task);
+        }
+
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> Create(CreateTaskItemDto dto)
@@ -38,5 +51,7 @@ namespace TaskManager.API.Controllers
 
             return Ok(taskDto);
         }
+
+        
     }
 }

@@ -10,5 +10,8 @@ namespace TaskManager.API.Interfaces
     {
         Task<List<TaskItem>> GetAllAsync(string userId);
         Task<TaskItem> CreateAsync(TaskItem taskItem);
+        Task<TaskItem?> GetByIdAsync(int id, string userId);
+        // Task<TaskItem?> UpdateAsync(TaskItem taskItem);
+        // Task<TaskItem?> DeleteAsync(int Id);
     }
 }

@@ -28,9 +28,9 @@ namespace TaskManager.API.Services
 
             task.UserId = userId!;
 
-            await _taskRepository.CreateAsync(task);
+            var createdTask = await _taskRepository.CreateAsync(task);
 
-            return _mapper.Map<TaskItemResponseDto>(task);
+            return _mapper.Map<TaskItemResponseDto>(createdTask);
         }
 
         public async Task<List<TaskItemResponseDto>> GetAllTaskAsync()
@@ -42,6 +42,18 @@ namespace TaskManager.API.Services
             var taskDto = _mapper.Map<List<TaskItemResponseDto>>(tasks);
 
             return taskDto;
+        }
+
+        public async Task<TaskItemResponseDto?> GetTaskByIdAsync(int id)
+        {
+            var userId = _currentUserService.UserId;
+
+            var task = await _taskRepository.GetByIdAsync(id, userId!);
+
+            if (task == null)
+                return null;
+
+            return _mapper.Map<TaskItemResponseDto>(task);
         }
     }
 }
