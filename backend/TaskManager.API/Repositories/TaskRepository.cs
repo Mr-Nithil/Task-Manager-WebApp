@@ -63,6 +63,7 @@ namespace TaskManager.API.Repositories
                 return null;
 
             task.IsCompleted = !task.IsCompleted;
+            task.UpdatedAt = DateTime.UtcNow;
 
             await _applicationDbContext.SaveChangesAsync();
 
@@ -81,6 +82,7 @@ namespace TaskManager.API.Repositories
             existingTask.IsCompleted = taskItem.IsCompleted;
             existingTask.Priority = taskItem.Priority;
             existingTask.DueDate = taskItem.DueDate;
+            existingTask.UpdatedAt = DateTime.UtcNow;
 
             await _applicationDbContext.SaveChangesAsync();
 
