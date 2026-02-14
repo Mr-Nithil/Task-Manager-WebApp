@@ -16,8 +16,8 @@ namespace TaskManager.API.DTOs.Task
         [StringLength(2000, ErrorMessage = "Description must be less than 2000 characters")]
         public string? Description { get; set; }
         [EnumDataType(typeof(TaskPriority), ErrorMessage = "Invalid priority value")]
-        public TaskPriority? Priority { get; set; }
-        [DataType(DataType.Date)]
+        public TaskPriority Priority { get; set; }
+        [DataType(DataType.DateTime)]
         [FutureDate(ErrorMessage = "Due date cannot be in the past")]
         public DateTime? DueDate { get; set; }
     }

@@ -18,7 +18,7 @@ namespace TaskManager.API.DTOs.Task
         [Required(ErrorMessage = "Priority is required")]
         [EnumDataType(typeof(TaskPriority), ErrorMessage = "Invalid priority value")]
         public TaskPriority Priority { get; set; }
-        [DataType(DataType.Date)]
+        [DataType(DataType.DateTime)]
         public DateTime? DueDate { get; set; }
     }
 }

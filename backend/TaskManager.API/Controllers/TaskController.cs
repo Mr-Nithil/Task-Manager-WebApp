@@ -49,7 +49,7 @@ namespace TaskManager.API.Controllers
         {
             var taskDto = await _taskService.CreateTaskAsync(dto);
 
-            return Ok(taskDto);
+            return CreatedAtAction(nameof(GetById), new { id = taskDto.Id }, taskDto);
         }
 
         [HttpPut]
