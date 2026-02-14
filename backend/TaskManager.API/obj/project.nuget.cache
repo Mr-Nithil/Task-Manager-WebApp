@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "Fea21wBF4CY=",
+  "dgSpecHash": "3A/T0Ao9Zyg=",
   "success": true,
   "projectFilePath": "/Users/nithilsheshan/Desktop/My Stuff/dot NET Dev/Task-Manager-WebApp/backend/TaskManager.API/TaskManager.API.csproj",
   "expectedPackageFiles": [
+    "/Users/nithilsheshan/.nuget/packages/automapper/12.0.1/automapper.12.0.1.nupkg.sha512",
+    "/Users/nithilsheshan/.nuget/packages/automapper.extensions.microsoft.dependencyinjection/12.0.1/automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
     "/Users/nithilsheshan/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
     "/Users/nithilsheshan/.nuget/packages/microsoft.aspnetcore.authentication.jwtbearer/10.0.3/microsoft.aspnetcore.authentication.jwtbearer.10.0.3.nupkg.sha512",
     "/Users/nithilsheshan/.nuget/packages/microsoft.aspnetcore.identity.entityframeworkcore/10.0.3/microsoft.aspnetcore.identity.entityframeworkcore.10.0.3.nupkg.sha512",

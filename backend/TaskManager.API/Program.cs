@@ -7,6 +7,7 @@ using Microsoft.OpenApi;
 using TaskManager.API.Data;
 using TaskManager.API.Interfaces;
 using TaskManager.API.Models;
+using TaskManager.API.Repositories;
 using TaskManager.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -55,6 +56,8 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+
+// Controllers with Json Serialization
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
     {
@@ -62,7 +65,21 @@ builder.Services.AddControllers()
     });
 builder.Services.AddEndpointsApiExplorer();
 
+
+// Auto Mapper
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+// Services
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<ITaskService, TaskService>();
+
+// Repositories
+builder.Services.AddScoped<ITaskRepository, TaskRepository>();
+
+// Current User Service
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+
 
 builder.Services.AddSwaggerGen(options =>
 {
@@ -89,6 +106,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Seed Roles and Admin User
 using (var scope = app.Services.CreateScope())
 {
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
