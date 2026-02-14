@@ -24,6 +24,19 @@ namespace TaskManager.API.Repositories
             return taskItem;
         }
 
+        public async Task<TaskItem?> DeleteAsync(int id, string userId)
+        {
+            var task = await _applicationDbContext.Tasks.FirstOrDefaultAsync(t => t.Id == id && t.UserId == userId);
+
+            if(task == null)
+                return null;
+            
+            _applicationDbContext.Tasks.Remove(task);
+            await _applicationDbContext.SaveChangesAsync();
+
+            return task;
+        }
+
         public async Task<List<TaskItem>> GetAllAsync(string userId)
         {
             var tasks = await _applicationDbContext
@@ -40,6 +53,24 @@ namespace TaskManager.API.Repositories
             return await _applicationDbContext
                 .Tasks
                 .FirstOrDefaultAsync(t => t.Id == id && t.UserId == userId);
+        }
+
+        public async Task<TaskItem?> UpdateAsync(int id, TaskItem taskItem, string userId)
+        {
+            var existingTask = await _applicationDbContext.Tasks.FirstOrDefaultAsync(t => t.Id == id && t.UserId == userId);
+
+            if(existingTask == null)
+                return null;
+
+            existingTask.Title = taskItem.Title;
+            existingTask.Description = taskItem.Description;
+            existingTask.IsCompleted = taskItem.IsCompleted;
+            existingTask.Priority = taskItem.Priority;
+            existingTask.DueDate = taskItem.DueDate;
+
+            await _applicationDbContext.SaveChangesAsync();
+
+            return existingTask;
         }
     }
 }

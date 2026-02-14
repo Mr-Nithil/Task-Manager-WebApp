@@ -14,6 +14,7 @@ namespace TaskManager.API.Mappings
         {
             CreateMap<TaskItem, TaskItemResponseDto>();
             CreateMap<CreateTaskItemDto, TaskItem>();
+            CreateMap<UpdateTaskItemDto, TaskItem>();
         }
     }
 }

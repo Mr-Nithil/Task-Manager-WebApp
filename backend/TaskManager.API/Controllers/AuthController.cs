@@ -116,7 +116,7 @@ namespace TaskManager.API.Controllers
                 return Unauthorized("Invalid credentials");
 
             if(!await _userManager.IsInRoleAsync(user, "Admin"))
-                return Unauthorized("Admin access required");
+                return Forbid();
 
             var token = await _tokenService.CreateToken(user);
 

@@ -11,7 +11,7 @@ namespace TaskManager.API.Models
         public string Title { get; set; } = "";
         public string? Description { get; set; }
         public bool IsCompleted { get; set; } = false;
-        public TaskPriority Priority { get; set; } = TaskPriority.Medium;
+        public TaskPriority Priority { get; set; } = TaskPriority.Low;
         public DateTime? DueDate { get; set; }
 
         public string UserId { get; set; }

@@ -52,6 +52,30 @@ namespace TaskManager.API.Controllers
             return Ok(taskDto);
         }
 
-        
+        [HttpPut]
+        [Authorize]
+        [Route("{id:int}")]
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateTaskItemDto dto)
+        {
+            var taskDto = await _taskService.UpdateTaskAsync(id ,dto);
+
+            if(taskDto == null)
+                return NotFound();
+
+            return Ok(taskDto);
+        }
+
+        [HttpDelete]
+        [Authorize]
+        [Route("{id:int}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            var taskDto = await _taskService.DeleteTaskAsync(id);
+
+            if(taskDto == null)
+                return NotFound();
+
+            return NoContent();
+        }
     }
 }

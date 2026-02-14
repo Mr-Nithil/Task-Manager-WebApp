@@ -11,5 +11,7 @@ namespace TaskManager.API.Interfaces
         Task<List<TaskItemResponseDto>> GetAllTaskAsync();
         Task<TaskItemResponseDto> CreateTaskAsync(CreateTaskItemDto dto);
         Task<TaskItemResponseDto?> GetTaskByIdAsync(int id);
+        Task<TaskItemResponseDto?> UpdateTaskAsync(int id, UpdateTaskItemDto dto);
+        Task<TaskItemResponseDto?> DeleteTaskAsync(int id);
     }
 }

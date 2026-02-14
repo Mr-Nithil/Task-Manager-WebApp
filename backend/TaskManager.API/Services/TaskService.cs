@@ -33,6 +33,18 @@ namespace TaskManager.API.Services
             return _mapper.Map<TaskItemResponseDto>(createdTask);
         }
 
+        public async Task<TaskItemResponseDto?> DeleteTaskAsync(int id)
+        {
+            var userId = _currentUserService.UserId;
+
+            var deletedTask = await _taskRepository.DeleteAsync(id, userId!);
+
+            if(deletedTask == null)
+                return null;
+
+            return _mapper.Map<TaskItemResponseDto>(deletedTask);
+        }
+
         public async Task<List<TaskItemResponseDto>> GetAllTaskAsync()
         {
             var userId = _currentUserService.UserId;
@@ -54,6 +66,20 @@ namespace TaskManager.API.Services
                 return null;
 
             return _mapper.Map<TaskItemResponseDto>(task);
+        }
+
+        public async Task<TaskItemResponseDto?> UpdateTaskAsync(int id, UpdateTaskItemDto dto)
+        {
+            var task = _mapper.Map<TaskItem>(dto);
+
+            var userId = _currentUserService.UserId;
+
+            var updatedTask = await _taskRepository.UpdateAsync(id, task, userId!);
+
+            if(updatedTask == null)
+                return null;
+
+            return _mapper.Map<TaskItemResponseDto>(updatedTask);
         }
     }
 }
