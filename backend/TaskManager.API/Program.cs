@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using TaskManager.API.Data;
 using TaskManager.API.Interfaces;
+using TaskManager.API.Middleware;
 using TaskManager.API.Models;
 using TaskManager.API.Repositories;
 using TaskManager.API.Services;
@@ -98,6 +99,8 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 var app = builder.Build();
+
+app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

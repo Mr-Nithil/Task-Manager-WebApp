@@ -28,8 +28,6 @@ namespace TaskManager.API.Controllers
         [HttpPost("user/register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto dto)
         {
-            try
-            {
                 if(!ModelState.IsValid)
                     return BadRequest(ModelState);
 
@@ -66,11 +64,6 @@ namespace TaskManager.API.Controllers
                 {
                     return StatusCode(500, result.Errors);
                 }
-            }
-            catch (Exception e)
-            {
-                return StatusCode(500, e);
-            }
         }
 
         [HttpPost("user/login")]
