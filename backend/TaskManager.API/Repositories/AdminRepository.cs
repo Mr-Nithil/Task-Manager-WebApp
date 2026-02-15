@@ -36,7 +36,10 @@ namespace TaskManager.API.Repositories
 
         public async Task<AdminUserResponseDto?> ToggleUserStatusAsync(string userId)
         {
-            var user = await _applicationDbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            var user = await _applicationDbContext
+                .Users
+                .Include(u => u.Tasks)
+                .FirstOrDefaultAsync(u => u.Id == userId);
 
             if(user == null)
                 return null;
@@ -47,8 +50,8 @@ namespace TaskManager.API.Repositories
             return new AdminUserResponseDto
                 {
                     Id = user.Id,
-                    Username = user.UserName,
-                    Email = user.Email,
+                    Username = user.UserName!,
+                    Email = user.Email!,
                     CreatedAt = user.CreatedAt,
                     IsActive = user.IsActive,
 
@@ -88,8 +91,8 @@ namespace TaskManager.API.Repositories
                 .Select(u => new AdminUserResponseDto
                 {
                     Id = u.Id,
-                    Username = u.UserName,
-                    Email = u.Email,
+                    Username = u.UserName!,
+                    Email = u.Email!,
                     CreatedAt = u.CreatedAt,
                     IsActive = u.IsActive,
 
@@ -135,8 +138,8 @@ namespace TaskManager.API.Repositories
                 .Select(u => new AdminUserResponseDto
                 {
                     Id = u.Id,
-                    Username = u.UserName,
-                    Email = u.Email,
+                    Username = u.UserName!,
+                    Email = u.Email!,
                     CreatedAt = u.CreatedAt,
                     IsActive = u.IsActive,
 

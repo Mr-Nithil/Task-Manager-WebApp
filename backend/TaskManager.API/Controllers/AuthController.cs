@@ -77,6 +77,9 @@ namespace TaskManager.API.Controllers
             if(user == null)
                 return Unauthorized("Invalid credentials");
             
+            if(!user.IsActive)
+                return Unauthorized("Your account has been deactivated. Please contact support.");
+
             var result = await _signInManager.CheckPasswordSignInAsync(user, dto.Password, false);
 
             if(!result.Succeeded)
@@ -102,7 +105,10 @@ namespace TaskManager.API.Controllers
 
             if(user == null)
                 return Unauthorized("Invalid credentials");
-            
+
+            if(!user.IsActive)
+                return Unauthorized("Your account has been deactivated. Please contact support.");
+
             var result = await _signInManager.CheckPasswordSignInAsync(user, dto.Password, false);
 
             if(!result.Succeeded)

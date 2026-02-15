@@ -20,7 +20,6 @@ namespace TaskManager.API.Mappings
             CreateMap<TaskItem, AdminTaskItemResponseDto>()
                 .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.UserName))
                 .ForMember(dest => dest.UserEmail, opt => opt.MapFrom(src => src.User.Email));
-            CreateMap<AppUser, AdminUserResponseDto>();
         }
     }
 }
