@@ -73,9 +73,11 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // Services
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<ITaskService, TaskService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
 
 // Repositories
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
+builder.Services.AddScoped<IAdminRepository, AdminRepository>();
 
 // Current User Service
 builder.Services.AddHttpContextAccessor();

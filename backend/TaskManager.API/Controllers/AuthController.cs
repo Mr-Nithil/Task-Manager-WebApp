@@ -25,7 +25,7 @@ namespace TaskManager.API.Controllers
             _tokenService = tokenService;
         }
 
-        [HttpPost("user/register")]
+        [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto dto)
         {
                 if(!ModelState.IsValid)
@@ -66,7 +66,7 @@ namespace TaskManager.API.Controllers
                 }
         }
 
-        [HttpPost("user/login")]
+        [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto dto)
         {
             if(!ModelState.IsValid)

@@ -12,6 +12,7 @@ namespace TaskManager.API.Controllers
 {
     [Route("api/tasks")]
     [ApiController]
+    [Authorize(Roles = "User")]
     public class TaskController : ControllerBase
     {
         private readonly ITaskService _taskService;
@@ -22,7 +23,6 @@ namespace TaskManager.API.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> GetAll()
         {
             var taskDto = await _taskService.GetAllTaskAsync();
@@ -31,7 +31,6 @@ namespace TaskManager.API.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         [Route("{id:int}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
@@ -44,7 +43,6 @@ namespace TaskManager.API.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> Create(CreateTaskItemDto dto)
         {
             var taskDto = await _taskService.CreateTaskAsync(dto);
@@ -53,7 +51,6 @@ namespace TaskManager.API.Controllers
         }
 
         [HttpPut]
-        [Authorize]
         [Route("{id:int}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateTaskItemDto dto)
         {
@@ -66,7 +63,6 @@ namespace TaskManager.API.Controllers
         }
 
         [HttpDelete]
-        [Authorize]
         [Route("{id:int}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
@@ -79,7 +75,6 @@ namespace TaskManager.API.Controllers
         }
 
         [HttpPatch]
-        [Authorize]
         [Route("{id:int}/toggle-complete")]
         public async Task<IActionResult> ToggleComplete([FromRoute] int id)
         {

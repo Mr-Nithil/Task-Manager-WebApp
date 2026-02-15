@@ -136,3 +136,5 @@
 /Users/nithilsheshan/Desktop/My Stuff/dot NET Dev/Task-Manager-WebApp/backend/TaskManager.API/obj/Debug/net10.0/TaskManager.API.genruntimeconfig.cache
 /Users/nithilsheshan/Desktop/My Stuff/dot NET Dev/Task-Manager-WebApp/backend/TaskManager.API/obj/Debug/net10.0/ref/TaskManager.API.dll
 /Users/nithilsheshan/Desktop/My Stuff/dot NET Dev/Task-Manager-WebApp/backend/TaskManager.API/bin/Debug/net10.0/appsettings.Docker.json
+/Users/nithilsheshan/Desktop/My Stuff/dot NET Dev/Task-Manager-WebApp/backend/TaskManager.API/bin/Debug/net10.0/AutoMapper.dll
+/Users/nithilsheshan/Desktop/My Stuff/dot NET Dev/Task-Manager-WebApp/backend/TaskManager.API/bin/Debug/net10.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll

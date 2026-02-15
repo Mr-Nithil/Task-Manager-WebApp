@@ -10,8 +10,8 @@ namespace TaskManager.API.Data
 {
     public class ApplicationDbContext : IdentityDbContext<AppUser>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> dbContextOptions) 
-            : base(dbContextOptions){}
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> dbContextOptions)
+            : base(dbContextOptions) { }
 
         public DbSet<TaskItem> Tasks { get; set; }
 
@@ -22,6 +22,12 @@ namespace TaskManager.API.Data
             builder.Entity<AppUser>()
                 .HasIndex(u => u.Email)
                 .IsUnique();
+
+            builder.Entity<AppUser>()
+                .HasMany(u => u.UserRoles)
+                .WithOne()
+                .HasForeignKey(ur => ur.UserId)
+                .IsRequired();
 
             builder.Entity<TaskItem>()
                 .HasOne(t => t.User)
