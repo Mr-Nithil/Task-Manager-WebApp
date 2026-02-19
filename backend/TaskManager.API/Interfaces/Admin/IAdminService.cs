@@ -11,6 +11,7 @@ namespace TaskManager.API.Interfaces
     {
         Task<AdminResponseDto?> GetAdminProfileAsync();
         Task<AdminResponseDto?> UpdateAdminProfileAsync(UpdateAdminDto dto);
+        Task<AdminResponseDto?> SelfDeleteAsync();
 
         Task<List<AdminUserResponseDto>> GetAllUsersAsync();
         Task<AdminUserResponseDto?> GetUserWithTasksAsync(string userId);

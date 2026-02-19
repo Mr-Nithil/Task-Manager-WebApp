@@ -115,5 +115,17 @@ namespace TaskManager.API.Services
 
             return user;
         }
+
+        public async Task<AdminResponseDto?> SelfDeleteAsync()
+        {
+            var id = _currentUserService.UserId;
+
+            var user = await _adminRepository.SelfDeleteAsync(id!);
+
+            if(user == null)
+                return null;
+
+            return user;
+        }
     }
 }

@@ -242,5 +242,23 @@ namespace TaskManager.API.Repositories
                     }).ToList()
                 };
         }
+
+        public async Task<AdminResponseDto?> SelfDeleteAsync(string id)
+        {
+            var existingUser = await _applicationDbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
+
+            if(existingUser == null)
+                return null;
+
+            _applicationDbContext.Users.Remove(existingUser);
+            await _applicationDbContext.SaveChangesAsync();
+
+            return new AdminResponseDto
+            {
+                Id = existingUser!.Id,
+                Username = existingUser.UserName!,
+                Email = existingUser.Email!,
+            };
+        }
     }
 }
