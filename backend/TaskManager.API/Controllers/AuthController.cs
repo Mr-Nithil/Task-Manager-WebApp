@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TaskManager.API.DTOs;
+using TaskManager.API.DTOs.Auth;
 using TaskManager.API.Interfaces;
 using TaskManager.API.Models;
 
@@ -52,13 +55,15 @@ namespace TaskManager.API.Controllers
                     if (!roleResult.Succeeded)
                         return StatusCode(500, roleResult.Errors);
 
+                    var roles = new List<string> { "User" };
                     var token = await _tokenService.CreateToken(user);
 
                     return Ok(new AuthResponseDto
                     {
                         Token = token,
                         Username = user.UserName,
-                        Email = user.Email
+                        Email = user.Email,
+                        Roles = roles 
                     });
                 }
                 else
@@ -88,15 +93,19 @@ namespace TaskManager.API.Controllers
 
             var token = await _tokenService.CreateToken(user);
 
+            var roles = await _userManager.GetRolesAsync(user);
+
             return Ok(new AuthResponseDto
             {
                 Token = token,
                 Username = user.UserName!,
-                Email = user.Email!
+                Email = user.Email!,
+                Roles = roles.ToList()
             });
         }
 
         [HttpPost("admin/register")]
+        [Authorize(Roles = "Admin")] 
         public async Task<IActionResult> AdminRegister([FromBody] RegisterDto dto)
         {
                 if(!ModelState.IsValid)
@@ -123,13 +132,15 @@ namespace TaskManager.API.Controllers
                     if (!roleResult.Succeeded)
                         return StatusCode(500, roleResult.Errors);
 
+                    var roles = new List<string> { "Admin" };
                     var token = await _tokenService.CreateToken(user);
 
                     return Ok(new AuthResponseDto
                     {
                         Token = token,
                         Username = user.UserName,
-                        Email = user.Email
+                        Email = user.Email,
+                        Roles = roles
                     });
                 }
                 else
@@ -138,36 +149,76 @@ namespace TaskManager.API.Controllers
                 }
         }
 
-        [HttpPost("admin/login")]
-        public async Task<IActionResult> AdminLogin([FromBody] LoginDto dto)
+        // [HttpPost("admin/login")]
+        // public async Task<IActionResult> AdminLogin([FromBody] LoginDto dto)
+        // {
+        //     if(!ModelState.IsValid)
+        //         return BadRequest(ModelState);
+
+        //     var user = await _userManager.FindByEmailAsync(dto.Email);
+
+        //     if(user == null)
+        //         return Unauthorized("Invalid credentials");
+
+        //     if(!user.IsActive)
+        //         return Unauthorized("Your account has been deactivated. Please contact support.");
+
+        //     var result = await _signInManager.CheckPasswordSignInAsync(user, dto.Password, false);
+
+        //     if(!result.Succeeded)
+        //         return Unauthorized("Invalid credentials");
+
+        //     if(!await _userManager.IsInRoleAsync(user, "Admin"))
+        //         return Forbid();
+
+        //     var token = await _tokenService.CreateToken(user);
+
+        //     return Ok(new AuthResponseDto
+        //     {
+        //         Token = token,
+        //         Username = user.UserName!,
+        //         Email = user.Email!
+        //     });
+        // }
+
+        [HttpPost("change-password")]
+        [Authorize]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto dto)
         {
             if(!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var user = await _userManager.FindByEmailAsync(dto.Email);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userId))
+                return Unauthorized("User not found");
+
+            var user = await _userManager.FindByIdAsync(userId);
 
             if(user == null)
-                return Unauthorized("Invalid credentials");
+                return NotFound("User not found");
 
-            if(!user.IsActive)
-                return Unauthorized("Your account has been deactivated. Please contact support.");
+            var result = await _userManager.ChangePasswordAsync(user, dto.CurrentPassword, dto.NewPassword);
 
-            var result = await _signInManager.CheckPasswordSignInAsync(user, dto.Password, false);
-
-            if(!result.Succeeded)
-                return Unauthorized("Invalid credentials");
-
-            if(!await _userManager.IsInRoleAsync(user, "Admin"))
-                return Forbid();
-
-            var token = await _tokenService.CreateToken(user);
-
-            return Ok(new AuthResponseDto
+            if (!result.Succeeded)
             {
-                Token = token,
-                Username = user.UserName!,
-                Email = user.Email!
-            });
+                return BadRequest(
+                    new
+                    {
+                        message = "Password change failed",
+                        errors = result.Errors.Select(e => e.Description)
+                    }
+                );
+            }
+
+            await _userManager.UpdateSecurityStampAsync(user);
+
+            return Ok(
+                new
+                {
+                    message = "Password changed successfully"
+                }
+            );
         }
     }
 }
