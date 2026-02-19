@@ -32,6 +32,18 @@ namespace TaskManager.API.Services
             return user;
         }
 
+        public async Task<UserResponseDto?> SelfDeleteAsync()
+        {
+            var id = _currentUserService.UserId;
+
+            var user = await _userRepository.SelfDeleteAsync(id!);
+
+            if(user == null)
+                return null;
+
+            return user;
+        }
+
         public async Task<UserResponseDto?> UpdateUserAsync(UpdateUserDto dto)
         {
             var user = _mapper.Map<AppUser>(dto);

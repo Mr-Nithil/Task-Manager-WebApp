@@ -43,5 +43,17 @@ namespace TaskManager.API.Controllers
 
             return Ok(user);
         }
+
+        [HttpDelete]
+        [Route("me")]
+        public async Task<IActionResult> SelfDelete()
+        {
+            var user = await _userService.SelfDeleteAsync();
+
+            if(user == null)
+                return NotFound();
+
+            return NoContent();
+        }
     }
 }

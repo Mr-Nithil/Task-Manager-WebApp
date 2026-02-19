@@ -11,5 +11,6 @@ namespace TaskManager.API.Interfaces
     {
         Task<UserResponseDto?> GetUserAsync(string id);
         Task<UserResponseDto?> UpdateUserAsync(string id, AppUser user);
+        Task<UserResponseDto?> SelfDeleteAsync(string id);
     }
 }

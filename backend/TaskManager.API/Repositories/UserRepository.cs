@@ -41,6 +41,29 @@ namespace TaskManager.API.Repositories
             }; 
         }
 
+        public async Task<UserResponseDto?> SelfDeleteAsync(string id)
+        {
+            var existingUser = await _applicationDbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
+
+            if(existingUser == null)
+                return null;
+
+            _applicationDbContext.Users.Remove(existingUser);
+            await _applicationDbContext.SaveChangesAsync();
+
+            return new UserResponseDto
+            {
+                Id = existingUser.Id,
+                Username = existingUser.UserName!,
+                Email = existingUser.Email!,
+                IsActive = existingUser.IsActive,
+
+                TotalTasks = existingUser.Tasks.Count(),
+                CompletedTasks = existingUser.Tasks.Count(t => t.IsCompleted == true),
+                PendingTasks = existingUser.Tasks.Count(t => t.IsCompleted == false),
+            };
+        }
+
         public async Task<UserResponseDto?> UpdateUserAsync(string id, AppUser user)
         {
             var existingUser = await _applicationDbContext

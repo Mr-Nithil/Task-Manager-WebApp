@@ -10,5 +10,6 @@ namespace TaskManager.API.Interfaces
     {
         Task<UserResponseDto?> GetUserAsync();
         Task<UserResponseDto?> UpdateUserAsync(UpdateUserDto dto);
+        Task<UserResponseDto?> SelfDeleteAsync();
     }
 }
