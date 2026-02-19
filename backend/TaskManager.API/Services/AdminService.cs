@@ -5,16 +5,19 @@ using System.Threading.Tasks;
 using AutoMapper;
 using TaskManager.API.DTOs.Admin;
 using TaskManager.API.Interfaces;
+using TaskManager.API.Models;
 
 namespace TaskManager.API.Services
 {
     public class AdminService : IAdminService
     {
         private readonly IAdminRepository _adminRepository;
+        private readonly ICurrentUserService _currentUserService;
         private readonly IMapper _mapper;
-        public AdminService(IAdminRepository adminRepository, IMapper mapper)
+        public AdminService(IAdminRepository adminRepository, ICurrentUserService currentUserService, IMapper mapper)
         {
             _adminRepository = adminRepository;
+            _currentUserService = currentUserService;
             _mapper = mapper;
         }
 
@@ -70,6 +73,32 @@ namespace TaskManager.API.Services
                 return null;
 
             return user;
+        }
+
+        public async Task<AdminResponseDto?> GetAdminProfileAsync()
+        {
+            var id = _currentUserService.UserId;
+
+            var user = await _adminRepository.GetAdminProfileAsync(id);
+
+            if(user == null)
+                return null;
+
+            return user;
+        }
+
+        public async Task<AdminResponseDto?> UpdateAdminProfileAsync(UpdateAdminDto dto)
+        {
+            var user = _mapper.Map<AppUser>(dto);
+
+            var id = _currentUserService.UserId;
+
+            var updatedUser = await _adminRepository.UpdateAdminProfileAsync(id!, user);
+
+            if(updatedUser == null)
+                return null;
+
+            return updatedUser;
         }
     }
 }

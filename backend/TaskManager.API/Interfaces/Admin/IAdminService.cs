@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TaskManager.API.DTOs.Admin;
+using TaskManager.API.Models;
 
 namespace TaskManager.API.Interfaces
 {
     public interface IAdminService
     {
+        Task<AdminResponseDto?> GetAdminProfileAsync();
+        Task<AdminResponseDto?> UpdateAdminProfileAsync(UpdateAdminDto dto);
+
         Task<List<AdminUserResponseDto>> GetAllUsersAsync();
         Task<AdminUserResponseDto?> GetUserWithTasksAsync(string userId);
         Task<AdminUserResponseDto?> ToggleUserStatusAsync(string userId);

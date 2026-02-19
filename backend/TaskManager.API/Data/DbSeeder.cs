@@ -36,7 +36,8 @@ namespace TaskManager.API.Data
             {
                 UserName = adminUsername,
                 Email = adminEmail,
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                IsActive = true
             };
 
             var result = await userManager.CreateAsync(adminUser, adminPassword);

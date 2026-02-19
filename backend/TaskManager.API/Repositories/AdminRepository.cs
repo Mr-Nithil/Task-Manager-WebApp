@@ -166,5 +166,43 @@ namespace TaskManager.API.Repositories
 
             return user;
         }
+
+        public async Task<AdminResponseDto?> GetAdminProfileAsync(string id)
+        {
+            var user = await _applicationDbContext
+                .Users
+                .FirstOrDefaultAsync(u => u.Id == id);
+
+            if(user == null)
+                return null;
+
+            return new AdminResponseDto
+            {
+                Id = user!.Id,
+                Username = user.UserName!,
+                Email = user.Email!,
+            };
+        }
+
+        public async Task<AdminResponseDto?> UpdateAdminProfileAsync(string id, AppUser user)
+        {
+            var existingUser = await _applicationDbContext
+                .Users
+                .FirstOrDefaultAsync(u => u.Id == id);
+
+            if(existingUser == null)
+                return null;
+
+            existingUser.UserName = user.UserName;
+
+            await _applicationDbContext.SaveChangesAsync();
+
+            return new AdminResponseDto
+            {
+                Id = existingUser!.Id,
+                Username = existingUser.UserName!,
+                Email = existingUser.Email!,
+            };
+        }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TaskManager.API.DTOs.Admin;
 using TaskManager.API.Interfaces;
 
 namespace TaskManager.API.Controllers
@@ -78,6 +79,30 @@ namespace TaskManager.API.Controllers
         public async Task<IActionResult> ToggleUserStatus([FromRoute] string userId)
         {
             var userDto = await _adminService.ToggleUserStatusAsync(userId);
+
+            if(userDto == null)
+                return NotFound();
+
+            return Ok(userDto);
+        }
+
+        [HttpGet]
+        [Route("me")]
+        public async Task<IActionResult> GetAdminProfile()
+        {
+            var userDto = await _adminService.GetAdminProfileAsync();
+
+            if(userDto == null)
+                return NotFound();
+
+            return Ok(userDto);
+        }
+
+        [HttpPatch]
+        [Route("me")]
+        public async Task<IActionResult> UpdateAdminProfile([FromBody] UpdateAdminDto dto)
+        {
+            var userDto = await _adminService.UpdateAdminProfileAsync(dto);
 
             if(userDto == null)
                 return NotFound();

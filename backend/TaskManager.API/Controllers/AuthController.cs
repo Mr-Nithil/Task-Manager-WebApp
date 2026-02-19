@@ -40,6 +40,7 @@ namespace TaskManager.API.Controllers
                 {
                     UserName = dto.Username,
                     Email = dto.Email,
+                    IsActive = true,
                 };
 
                 var result = await _userManager.CreateAsync(user, dto.Password);
