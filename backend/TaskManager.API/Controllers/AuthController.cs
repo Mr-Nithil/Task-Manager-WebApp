@@ -96,6 +96,48 @@ namespace TaskManager.API.Controllers
             });
         }
 
+        [HttpPost("admin/register")]
+        public async Task<IActionResult> AdminRegister([FromBody] RegisterDto dto)
+        {
+                if(!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
+                var userExists = await _userManager.FindByEmailAsync(dto.Email);
+
+                if(userExists != null)
+                    return BadRequest("Email already registered");
+
+                var user = new AppUser
+                {
+                    UserName = dto.Username,
+                    Email = dto.Email,
+                    IsActive = true,
+                };
+
+                var result = await _userManager.CreateAsync(user, dto.Password);
+
+                if (result.Succeeded)
+                {
+                    var roleResult = await _userManager.AddToRoleAsync(user, "Admin");
+
+                    if (!roleResult.Succeeded)
+                        return StatusCode(500, roleResult.Errors);
+
+                    var token = await _tokenService.CreateToken(user);
+
+                    return Ok(new AuthResponseDto
+                    {
+                        Token = token,
+                        Username = user.UserName,
+                        Email = user.Email
+                    });
+                }
+                else
+                {
+                    return StatusCode(500, result.Errors);
+                }
+        }
+
         [HttpPost("admin/login")]
         public async Task<IActionResult> AdminLogin([FromBody] LoginDto dto)
         {
