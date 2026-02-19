@@ -109,5 +109,17 @@ namespace TaskManager.API.Controllers
 
             return Ok(userDto);
         }
+
+        [HttpDelete]
+        [Route("users/{userId}")]
+        public async Task<IActionResult> DeleteUser([FromRoute]string userId)
+        {
+            var userDto = await _adminService.DeleteUserAsync(userId);
+
+            if(userDto == null)
+                return NotFound();
+
+            return NoContent();
+        }
     }
 }

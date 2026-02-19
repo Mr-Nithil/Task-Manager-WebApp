@@ -100,5 +100,20 @@ namespace TaskManager.API.Services
 
             return updatedUser;
         }
+
+        public async Task<AdminUserResponseDto?> DeleteUserAsync(string userId)
+        {
+            var id = _currentUserService.UserId;
+
+            if(userId == id)
+                return null;
+                
+            var user = await _adminRepository.DeleteUserAsync(userId);
+
+            if(user == null)
+                return null;
+
+            return user;
+        }
     }
 }

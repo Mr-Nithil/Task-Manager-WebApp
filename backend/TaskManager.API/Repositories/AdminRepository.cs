@@ -28,7 +28,7 @@ namespace TaskManager.API.Repositories
             if(task == null)
                 return null;
 
-            _applicationDbContext.Remove(task);
+            _applicationDbContext.Tasks.Remove(task);
             await _applicationDbContext.SaveChangesAsync();
 
             return task;
@@ -203,6 +203,44 @@ namespace TaskManager.API.Repositories
                 Username = existingUser.UserName!,
                 Email = existingUser.Email!,
             };
+        }
+
+        public async Task<AdminUserResponseDto?> DeleteUserAsync(string userId)
+        {
+            var existingUser = await _applicationDbContext
+                .Users
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
+            if(existingUser == null)
+                return null;
+
+            _applicationDbContext.Users.Remove(existingUser);
+            await _applicationDbContext.SaveChangesAsync();
+
+            return new AdminUserResponseDto
+                {
+                    Id = existingUser.Id,
+                    Username = existingUser.UserName!,
+                    Email = existingUser.Email!,
+                    CreatedAt = existingUser.CreatedAt,
+                    IsActive = existingUser.IsActive,
+
+                    TotalTasks = existingUser.Tasks.Count(),
+                    CompletedTasks = existingUser.Tasks.Count(t => t.IsCompleted == true),
+                    PendingTasks = existingUser.Tasks.Count(t => t.IsCompleted == false),
+
+                    Tasks = existingUser.Tasks.Select(t => new TaskItemResponseDto
+                    {
+                        Id = t.Id,
+                        Title = t.Title,
+                        Description = t.Description,
+                        IsCompleted = t.IsCompleted,
+                        Priority = t.Priority,
+                        DueDate = t.DueDate,
+                        CreatedAt = t.CreatedAt,
+                        UpdatedAt = t.UpdatedAt,
+                    }).ToList()
+                };
         }
     }
 }

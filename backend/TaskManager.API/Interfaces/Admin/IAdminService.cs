@@ -15,6 +15,7 @@ namespace TaskManager.API.Interfaces
         Task<List<AdminUserResponseDto>> GetAllUsersAsync();
         Task<AdminUserResponseDto?> GetUserWithTasksAsync(string userId);
         Task<AdminUserResponseDto?> ToggleUserStatusAsync(string userId);
+        Task<AdminUserResponseDto?> DeleteUserAsync(string userId);
 
         Task<List<AdminTaskItemResponseDto>> GetAllTasksAsync(); 
         Task<AdminTaskItemResponseDto?> GetTaskByIdAsync(int id);
